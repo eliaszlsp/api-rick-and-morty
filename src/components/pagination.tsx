@@ -10,7 +10,7 @@ interface Props {
   page: number;
   maxPagination: number;
   active: number;
-  setactive: (index: number) => void;
+  setActive: (index: number) => void;
   prev: () => void;
   next: () => void;
 }
@@ -18,7 +18,7 @@ interface Props {
 type Color = "blue" | "blue-gray";
 
 export default function ButtonPages(props: Props) {
-  const { maxPagination, active, setactive, prev, next }: Props = props;
+  const { maxPagination, active, setActive, prev, next }: Props = props;
 
   useEffect(() => {}, []);
 
@@ -28,7 +28,7 @@ export default function ButtonPages(props: Props) {
     variant: active === index ? ("filled" as Variant) : ("text" as Variant),
     color: active === index ? ("blue" as Color) : ("blue-gray" as Color),
     onClick: () => {
-      setactive(index);
+      setActive(index);
     },
   });
 

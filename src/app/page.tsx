@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getStaticProps } from "@/querys/apiconsumer";
 import Image from "next/image";
 import ButtonPages from "@/components/pagination";
+import StampCard from "@/components/stampcard";
 
 interface Character {
   name: string;
@@ -14,24 +15,26 @@ export default function Home() {
   const [name, setName] = useState("");
   const [active, setActive] = useState<number>(1);
   const [maxPagination, setMaxPagination] = useState<number>();
+  const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
     const fetchCharacters = async () => {
       const data = await getStaticProps(name, active);
       setCharacters(data.characters.results);
       setMaxPagination(data.characters.info.pages);
-      console.log(data.characters);
+      console.log(data.characters.results);
     };
 
     fetchCharacters();
   }, [name, active]);
 
-  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInput = (event: any) => {
     if (active != 1) {
       setActive(1);
     }
-    setName(event.target.value.trim());
+    setName(inputValue);
   };
+
   const next = () => {
     if (active === maxPagination) return;
 
@@ -47,46 +50,63 @@ export default function Home() {
   return (
     <>
       <div>
-        <div className="mt-4 flex w-screen justify-center ">
+        <div className=" mt-4 flex w-screen justify-center ">
           <input
-            className="h-8 border border-black placeholder:text-sm placeholder:uppercase 
-            placeholder:italic placeholder:text-red-700  "
-            onChange={handleInput}
-            placeholder="Busque seu Personagem... "
+            className="h-10 rounded-md border-4 pl-1 focus:border-[#bfde42] focus:outline-none  "
+            onChange={(e) => setInputValue(e.target.value.trim())}
+            placeholder="Find your character... "
           />
+
+          <button
+            onClick={handleInput}
+            className="ml-10 w-24 rounded-md border-4 border-[#bfde42] bg-[#41b4c9] "
+          >
+            Search
+          </button>
         </div>
 
-        <ButtonPages
-          active={active}
-          next={next}
-          prev={prev}
-          setactive={setActive}
-          maxPagination={maxPagination ?? 0}
-          input={() => {}}
-          increment={() => {}}
-          decrement={() => {}}
-          page={0}
-        />
-        <div className="ml-4 mt-4 grid grid-cols-5 gap-6 text-center">
+        <div className=" mx-7 my-5  flex flex-wrap justify-center gap-40 text-center ">
           {characters.length > 0 &&
             characters.map((user: any, index: number) => {
+              {
+                console.log(user.location.name);
+              }
               return (
                 <div
                   key={index}
-                  className="flex h-fit w-[150px] flex-col items-center gap-3 rounded-md border-4 border-[#b3dc2b] bg-[#04b3cb] pb-4  "
+                  className="relative flex  h-96 min-h-full w-64 flex-col items-center gap-1 rounded-md border-4 border-[#bfde42] bg-[#41b4c9] pb-4  "
                 >
                   <Image
                     className="mt-4 rounded-md border "
                     key={user.id}
                     src={user.image}
-                    width={100}
-                    height={100}
+                    width={200}
+                    height={200}
                     alt="bruxo"
                   />
-                  <p className="decoration-black">{user.name}</p>
+                  <p className=" relative "> Name:{user.name}</p>
+                  <p className="">Species:{user.species}</p>
+                  <p className="">Gender:{user.gender}</p>
+                  <p className=""> Location: {user.location.name} </p>
+                  <div className=" absolute right-0   -mr-[55px] h-56 w-56 ">
+                    <StampCard status={user.status} />
+                  </div>
                 </div>
               );
             })}
+        </div>
+        <div className=" mr-20  flex flex-1 flex-row-reverse self-end ">
+          <ButtonPages
+            active={active}
+            next={next}
+            prev={prev}
+            setActive={setActive}
+            maxPagination={maxPagination ?? 0}
+            input={() => {}}
+            increment={() => {}}
+            decrement={() => {}}
+            page={0}
+          />
         </div>
       </div>
     </>

@@ -35,6 +35,12 @@ export async function getStaticProps(
           results {
             name
             image
+            status 
+            species
+            gender
+            location {
+               name
+            }
           }
         }
       }
