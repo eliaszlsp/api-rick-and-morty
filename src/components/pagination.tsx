@@ -4,9 +4,6 @@ import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 import { useEffect } from "react";
 
 interface Props {
-  input: () => void;
-  increment: () => void;
-  decrement: () => void;
   page: number;
   maxPagination: number;
   active: number;

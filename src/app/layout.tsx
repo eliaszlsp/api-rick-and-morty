@@ -1,8 +1,7 @@
 "use client";
 import "./globals.css";
-import { Inter } from "next/font/google";
+
 import { ThemeProvider } from "@material-tailwind/react";
-const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,
@@ -12,7 +11,7 @@ export default function RootLayout({
   return (
     <ThemeProvider>
       <html lang="pt-br">
-        <body className={`${inter.className} bg-black`}>{children}</body>
+        <body className="bg-black">{children}</body>
       </html>
     </ThemeProvider>
   );
