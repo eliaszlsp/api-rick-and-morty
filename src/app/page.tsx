@@ -18,16 +18,20 @@ export default function Home() {
   const [maxPagination, setMaxPagination] = useState<number>();
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
-
   useEffect(() => {
     const fetchCharacters = async () => {
       const data = await getStaticProps(name, active);
       setCharacters(data.characters.results);
       setMaxPagination(data.characters.info.pages);
+      setLoading(true);
     };
 
-    fetchCharacters();
-    setLoading(true);
+    const fetchData = async () => {
+      setLoading(false);
+      await fetchCharacters();
+    };
+
+    fetchData();
   }, [name, active]);
 
   const handleInput = (event: any) => {
